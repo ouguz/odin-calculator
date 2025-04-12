@@ -1,4 +1,4 @@
-//step-1 operator functions
+//step-1 functions
 
 function add (num1,num2){
     return num1+num2;
@@ -16,7 +16,15 @@ function divide(num1,num2){
     return (num1/num2);
 }
 
-//step-2 three variables
+function clear(){
+    numOne = "";
+    numTwo = "";
+    opOne = "";
+    opTwo = "";
+    textInput.value = "";
+}
+
+//step-2 variables
 
 let numOne = null;
 let numTwo = null;
@@ -36,8 +44,7 @@ function operatoral(op,num1,num2){
     } else if(op==="/"){
         return divide(num1,num2);
     }
-}
-//step-5 populate the display 
+};
 
 //step-4
 const box = document.querySelectorAll("#calculatorBox");
@@ -54,7 +61,7 @@ dot.addEventListener("click",(e)=>{
     if(!textInput.value.includes(".")){
     textInput.value += ".";
     }
-})
+});
 
 numbers.forEach(number=>number.addEventListener("click",(e)=>{
     textInput.value += `${e.target.textContent}`;
@@ -62,25 +69,23 @@ numbers.forEach(number=>number.addEventListener("click",(e)=>{
 }));
 
 clearButton.addEventListener("click",(e)=>{
-    textInput.value = "";
-    numOne = 0;
-    numTwo = 0;
-    opOne = "";
-    opTwo = "";
+    clear();
     sum = 0;
     textInput.placeholder = sum;
 });
 
 textInput.placeholder = sum;
 
-
 const operators = document.querySelectorAll(".op");
 
 operators.forEach(operator=>operator.addEventListener("click",(e)=>{
     //if the user wanna start a new calculation when sum already exist
-    if((sum) && (!opOne)){
-        sum = 0;
-        opOne = e.target.textContent;
+    if(sum){
+        if(textInput.value==""){
+            numOne = sum;
+            sum = 0;
+            opOne = e.target.textContent;
+        }
     }
     if(numOne){
         numTwo = +textInput.value;
@@ -94,13 +99,8 @@ operators.forEach(operator=>operator.addEventListener("click",(e)=>{
             };
     };
     if(!numOne){
-        if(sum){
-            numOne = +sum;
-        } else {
-            numOne = +textInput.value;
-
-        }
-    opOne = e.target.textContent;
+        numOne = +textInput.value;
+        opOne = e.target.textContent;
     };
     textInput.focus();
     console.log(numOne);
@@ -109,7 +109,6 @@ operators.forEach(operator=>operator.addEventListener("click",(e)=>{
     console.log(opTwo);
     textInput.value = "";
     textInput.placeholder = numOne;
-
 }));
 
 const equal = document.querySelector("#equal");
@@ -118,11 +117,7 @@ equal.addEventListener("click",(e)=>{
     if(numOne && opOne){
         numTwo = +textInput.value;
         sum = operatoral(opOne,numOne,numTwo);
-        opOne = "";
-        opTwo = "";
-        numTwo = "";
-        numOne = "";
-        textInput.value = "";
+        clear();
         textInput.placeholder = sum;
         console.log(sum);
     }
